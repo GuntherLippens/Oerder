@@ -17,6 +17,10 @@ public abstract class UserDTO {
     private String city;
     private String postalCode;
 
+    public String getId() {
+        return id;
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -36,8 +36,6 @@ public class CustomerMapper {
         result.setStreetNumber(customer.getAddress().getStreetNumber());
         result.setCity(customer.getAddress().getCity());
         result.setPostalCode(customer.getAddress().getPostalCode());
-
-
         return result;
     }
 
@@ -52,8 +50,6 @@ public class CustomerMapper {
         result.setStreetNumber(customer.getAddress().getStreetNumber());
         result.setCity(customer.getAddress().getCity());
         result.setPostalCode(customer.getAddress().getPostalCode());
-
-
         return result;
     }
 }

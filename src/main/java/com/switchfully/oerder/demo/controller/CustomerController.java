@@ -22,8 +22,14 @@ public class CustomerController {
 
     @GetMapping(path = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerDTO> getAllMembers() {
+    public List<CustomerDTO> getAllCustomers() {
         return customerService.getAllCustomers();
+    }
+
+    @GetMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDTO getCustomerBasedOnId(@PathVariable String id) {
+        return customerService.getCustomer(id);
     }
 
     @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE,

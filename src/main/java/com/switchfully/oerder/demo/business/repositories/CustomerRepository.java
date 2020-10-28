@@ -45,4 +45,8 @@ public class CustomerRepository {
     public List<Customer> getCustomers() {
         return new ArrayList<>(customers.values());
     }
+
+    public Map<String,Customer> getCustomerMap() {
+        return customers;
+    }
 }

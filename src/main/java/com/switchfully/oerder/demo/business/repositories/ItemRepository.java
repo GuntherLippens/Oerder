@@ -38,6 +38,14 @@ public class ItemRepository {
         return item;
     }
 
+    public Item getFirstDefaultItem () {
+        Optional<Item> item = items.values().stream().findFirst();
+        if (item.isPresent()){
+            return item.get();
+        }
+        return null;
+    }
+
     public Map<String,Item> getItemMap(){
         return items;
     }
