@@ -1,10 +1,11 @@
 package com.switchfully.oerder.demo.business.entities.users;
 
+import com.switchfully.oerder.demo.business.entities.Entity;
 import com.switchfully.oerder.demo.utilities.Address;
 
 import java.util.UUID;
 
-public class User implements Entity{
+public class User implements Entity {
     private final String firstName;
     private final String lastName;
     private String emailAddress;

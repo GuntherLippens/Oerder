@@ -1,14 +1,16 @@
 package com.switchfully.oerder.demo.business.repositories;
 
 import com.switchfully.oerder.demo.business.entities.users.Customer;
-import com.switchfully.oerder.demo.exceptions.EntityAlreadyExistsException;
+import com.switchfully.oerder.demo.exceptions.CustomerAlreadyExistsException;
 import com.switchfully.oerder.demo.utilities.Address;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class CustomerRepository {
     private final Map<String, Customer> customers;
 
@@ -19,7 +21,12 @@ public class CustomerRepository {
     
     public Customer save(Customer customer) {
         if (customers.containsValue(customer))
-            throw new EntityAlreadyExistsException();
+            throw new CustomerAlreadyExistsException(
+                            "Customer "
+                            + customer.getFirstName()
+                            + " "
+                            + customer.getLastName()
+                            + " already exists.");
         customers.put(customer.getId(), customer);
 
         return customer;
@@ -31,7 +38,7 @@ public class CustomerRepository {
                 "Thefirst",
                  new Address("Cow street","45b","Gent","9000"),
                 "+32456987521",
-                "jan@firstisgood.be");
+                "jan@beingfirstisgood.be");
         customers.put(customer.getId(), customer);
     }
 
