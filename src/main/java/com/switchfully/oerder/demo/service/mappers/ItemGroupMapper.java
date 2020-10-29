@@ -22,7 +22,6 @@ public class ItemGroupMapper {
     public ItemGroupDTO detailDTO(ItemGroup itemGroup) {
         ItemGroupDTO result = new ItemGroupDTO();
         result.setOrderGroupId(itemGroup.getOrderGroupId());
-        result.setItemGroupId(itemGroup.getOrderGroupId());
         result.setItemId(itemGroup.getItemId());
         result.setAmount(itemGroup.getAmount());
         result.setOrderPrice(itemGroup.getOrderPrice());

@@ -4,21 +4,18 @@ import com.switchfully.oerder.demo.business.entities.items.Order;
 import com.switchfully.oerder.demo.exceptions.OrderAlreadyExistsException;
 import com.switchfully.oerder.demo.exceptions.OrderNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.*;
 
-
+@Repository
 public class OrderRepository {
 
     private final Map<String, Order> orders;
-    private final ItemRepository itemRepository;
 
     @Autowired
-    public OrderRepository(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
+    public OrderRepository() {
         this.orders = new HashMap<>();
-        addFirstOrder();
     }
 
     public Order save(Order order) {
@@ -44,20 +41,11 @@ public class OrderRepository {
         return orders;
     }
 
-    public void addFirstOrder() {
-        Order order = new Order(
-                "007default-item-group-id-points-to-nowhere-be-careful!",
-                itemRepository.getFirstDefaultItem().getId(),
-                10,
-                6.66,
-                LocalDate.now().plusYears(1000));
 
-        orders.put(order.getOrderId(), order);
-    }
 
     public List<Order> getOrders() {
         return new ArrayList<>(orders.values());
     }
 
 }
-}
+

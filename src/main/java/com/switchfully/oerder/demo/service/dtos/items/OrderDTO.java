@@ -1,30 +1,23 @@
-package com.switchfully.oerder.demo.business.entities.items;
+package com.switchfully.oerder.demo.service.dtos.items;
 
-import java.util.ArrayList;
+import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
+import com.switchfully.oerder.demo.business.entities.items.OrderStatus;
+
 import java.util.List;
-import java.util.UUID;
 
-public class Order {
+public class OrderDTO {
     private String orderId;
     private List<ItemGroup> itemGroups;
     private String customerId;
     private double totalPrice;
-    private OrderStatus orderStatus;
-
-    public Order(String customerId) {
-        this.customerId = customerId;
-        this.itemGroups = new ArrayList<>();
-        this.orderId = UUID.randomUUID().toString();
-        this.orderStatus = OrderStatus.CREATED;
-    }
-
-    public void addItemGroup(ItemGroup itemGroup) {
-        itemGroups.add(itemGroup);
-        totalPrice += itemGroup.getOrderPrice() * itemGroup.getAmount();
-    }
+    private OrderStatus orderIsPlaced;
 
     public String getOrderId() {
         return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public List<ItemGroup> getItemGroups() {
@@ -51,15 +44,11 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
     public OrderStatus getOrderStatus() {
-        return orderStatus;
+        return orderIsPlaced;
     }
 
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setOrderStatus(OrderStatus orderIsPlaced) {
+        this.orderIsPlaced = orderIsPlaced;
     }
 }

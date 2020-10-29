@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "/itemgroups")
+@RequestMapping(path = "/shopping-cart")
 public class ItemGroupController {
     private final ItemGroupService itemGroupService;
 
