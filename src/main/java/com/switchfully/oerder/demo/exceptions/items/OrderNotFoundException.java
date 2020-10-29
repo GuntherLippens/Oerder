@@ -1,4 +1,4 @@
-package com.switchfully.oerder.demo.exceptions;
+package com.switchfully.oerder.demo.exceptions.items;
 
 public class OrderNotFoundException extends RuntimeException{
     String message;

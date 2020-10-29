@@ -2,13 +2,12 @@ package com.switchfully.oerder.demo.service.services;
 
 import com.switchfully.oerder.demo.business.entities.items.Item;
 import com.switchfully.oerder.demo.business.repositories.ItemRepository;
-import com.switchfully.oerder.demo.exceptions.ItemNotFoundException;
+import com.switchfully.oerder.demo.exceptions.items.ItemNotFoundException;
 import com.switchfully.oerder.demo.service.dtos.items.ItemDTO;
 import com.switchfully.oerder.demo.service.mappers.ItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -2,8 +2,8 @@ package com.switchfully.oerder.demo.business.repositories;
 
 
 import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
-import com.switchfully.oerder.demo.exceptions.ItemGroupAlreadyExistsException;
-import com.switchfully.oerder.demo.exceptions.ItemGroupNotFoundException;
+import com.switchfully.oerder.demo.exceptions.items.ItemGroupAlreadyExistsException;
+import com.switchfully.oerder.demo.exceptions.items.ItemGroupNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -49,7 +49,7 @@ public class ItemGroupRepository {
     public void addFirstItemGroup() {
         ItemGroup itemGroup = new ItemGroup(
                  "007default-item-group-id-points-to-nowhere-be-careful!",
-                 itemRepository.getFirstDefaultItem().getId(),
+                 itemRepository.getFirstDefaultItem().getItemId(),
                 10,
                 6.66,
                  LocalDate.now().plusYears(1000));

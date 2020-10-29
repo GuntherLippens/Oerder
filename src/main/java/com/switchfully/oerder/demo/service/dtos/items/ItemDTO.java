@@ -5,7 +5,7 @@ public class ItemDTO {
     private String description;
     private double price;
     private int amount;
-    private String id;
+    private String itemId;
 
     public String getName() {
         return name;
@@ -19,7 +19,7 @@ public class ItemDTO {
         return description;
     }
 
-    public void setDecription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -39,11 +39,11 @@ public class ItemDTO {
         this.amount = amount;
     }
 
-    public String getId() {
-        return id;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 }

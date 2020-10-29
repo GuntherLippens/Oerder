@@ -16,9 +16,9 @@ public class ItemMapper {
 
     public ItemDTO detailDTO(Item item) {
         ItemDTO result = new ItemDTO();
-        result.setId(item.getId());
+        result.setItemId(item.getItemId());
         result.setName(item.getName());
-        result.setDecription(item.getDecription());
+        result.setDescription(item.getDecription());
         result.setPrice(item.getAmount());
         result.setAmount(item.getAmount());
         return result;

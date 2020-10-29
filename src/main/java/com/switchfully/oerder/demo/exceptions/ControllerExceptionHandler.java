@@ -1,5 +1,7 @@
 package com.switchfully.oerder.demo.exceptions;
 
+import com.switchfully.oerder.demo.exceptions.customers.CustomerAlreadyExistsException;
+import com.switchfully.oerder.demo.exceptions.customers.CustomerNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -15,5 +17,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
     }
 
+    @ExceptionHandler(CustomerNotFoundException.class)
+    protected void customerNotFoundException(CustomerNotFoundException ex, HttpServletResponse response) throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+    }
 
 }

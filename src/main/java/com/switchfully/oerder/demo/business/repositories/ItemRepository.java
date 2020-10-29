@@ -2,9 +2,8 @@ package com.switchfully.oerder.demo.business.repositories;
 
 import com.switchfully.oerder.demo.business.entities.items.Item;
 
-import com.switchfully.oerder.demo.exceptions.ItemAlreadyExistsException;
-import com.switchfully.oerder.demo.exceptions.ItemNotFoundException;
-import com.switchfully.oerder.demo.utilities.Address;
+import com.switchfully.oerder.demo.exceptions.items.ItemAlreadyExistsException;
+import com.switchfully.oerder.demo.exceptions.items.ItemNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -25,7 +24,7 @@ public class ItemRepository {
                             "Item "
                             + item.getDecription()
                             + " already exists.");
-        items.put(item.getId(), item);
+        items.put(item.getItemId(), item);
 
         return item;
     }
@@ -40,10 +39,7 @@ public class ItemRepository {
 
     public Item getFirstDefaultItem () {
         Optional<Item> item = items.values().stream().findFirst();
-        if (item.isPresent()){
-            return item.get();
-        }
-        return null;
+        return item.orElse(null);
     }
 
     public Map<String,Item> getItemMap(){
@@ -56,7 +52,7 @@ public class ItemRepository {
                 "Our very first product : Crunchy and yummy high calorie cookies",
                 6.66,
                 666);
-        items.put(item.getId(), item);
+        items.put(item.getItemId(), item);
     }
 
     public List<Item> getItems() {

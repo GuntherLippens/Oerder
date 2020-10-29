@@ -18,10 +18,16 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @GetMapping(path = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<OrderDTO> adminViewsAllOrders() {
+        return orderService.getAllOrderDTOs();
+    }
+
     @GetMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDTO> ViewAllOrders() {
-        return orderService.getAllOrderDTOs();
+    public List<OrderDTO> customerViewsAllHisOrders(@PathVariable String customerId) {
+        return orderService.getAllMyOrderDTOs(customerId);
     }
 
     @PostMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE,
@@ -34,7 +40,7 @@ public class OrderController {
     @PutMapping(path = "/customer/place-order/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO updateOrderStatusFromCreatedToOrdered(@PathVariable String id, @RequestBody OrderDTO orderDTO) {
-        return orderService.placeOrder(id, orderDTO);
+    public OrderDTO updateOrderStatusFromCreatedToOrdered(@PathVariable String id) {
+        return orderService.placeOrder(id);
     }
 }

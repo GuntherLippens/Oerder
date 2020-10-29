@@ -1,4 +1,4 @@
-package com.switchfully.oerder.demo.exceptions;
+package com.switchfully.oerder.demo.exceptions.customers;
 
 public class CustomerAlreadyExistsException extends RuntimeException{
     String message;

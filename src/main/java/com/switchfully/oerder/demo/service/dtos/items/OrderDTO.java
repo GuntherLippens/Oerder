@@ -1,7 +1,7 @@
 package com.switchfully.oerder.demo.service.dtos.items;
 
 import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
-import com.switchfully.oerder.demo.business.entities.items.OrderStatus;
+import com.switchfully.oerder.demo.utilities.OrderStatus;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class ItemGroupMapper {
     public ItemGroup createItemGroup(ItemGroupDTO itemGroupDTO, LocalDate shippingDate) {
         ItemGroup result = new ItemGroup(
-                itemGroupDTO.getOrderGroupId(),
+                itemGroupDTO.getOrderId(),
                 itemGroupDTO.getItemId(),
                 itemGroupDTO.getAmount(),
                 itemGroupDTO.getOrderPrice(),
@@ -21,7 +21,7 @@ public class ItemGroupMapper {
 
     public ItemGroupDTO detailDTO(ItemGroup itemGroup) {
         ItemGroupDTO result = new ItemGroupDTO();
-        result.setOrderGroupId(itemGroup.getOrderGroupId());
+        result.setOrderId(itemGroup.getOrderId());
         result.setItemId(itemGroup.getItemId());
         result.setAmount(itemGroup.getAmount());
         result.setOrderPrice(itemGroup.getOrderPrice());

@@ -1,14 +1,12 @@
 package com.switchfully.oerder.demo.business.repositories;
 
 import com.switchfully.oerder.demo.business.entities.users.Customer;
-import com.switchfully.oerder.demo.exceptions.CustomerAlreadyExistsException;
+import com.switchfully.oerder.demo.exceptions.customers.CustomerAlreadyExistsException;
+import com.switchfully.oerder.demo.exceptions.customers.CustomerNotFoundException;
 import com.switchfully.oerder.demo.utilities.Address;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class CustomerRepository {
@@ -27,7 +25,7 @@ public class CustomerRepository {
                             + " "
                             + customer.getLastName()
                             + " already exists.");
-        customers.put(customer.getId(), customer);
+        customers.put(customer.getItemId(), customer);
 
         return customer;
     }
@@ -39,7 +37,14 @@ public class CustomerRepository {
                  new Address("Cow street","45b","Gent","9000"),
                 "+32456987521",
                 "jan@beingfirstisgood.be");
-        customers.put(customer.getId(), customer);
+        customers.put(customer.getItemId(), customer);
+    }
+
+    public Customer getCustomerById(String id) {
+        if (Objects.isNull(getCustomerMap().get(id))){
+            throw new CustomerNotFoundException(id);
+        }
+        return getCustomerMap().get(id);
     }
 
     public List<Customer> getCustomers() {

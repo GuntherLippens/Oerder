@@ -2,6 +2,7 @@ package com.switchfully.oerder.demo.business.entities.items;
 
 import com.switchfully.oerder.demo.business.entities.Entity;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Item implements Entity {
@@ -9,14 +10,14 @@ public class Item implements Entity {
     private String decription;
     private double price;
     private int amount;
-    private String id;
+    private String itemId;
 
     public Item(String name, String decription, double price, int amount) {
         this.name = name;
         this.decription = decription;
         this.price = price;
         this.amount = amount;
-        this.id = UUID.randomUUID().toString();
+        this.itemId = UUID.randomUUID().toString();
     }
 
     public String getName() {
@@ -51,11 +52,24 @@ public class Item implements Entity {
         this.amount = amount;
     }
 
-    public String getId() {
-        return id;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return getItemId().equals(item.getItemId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getItemId());
     }
 }

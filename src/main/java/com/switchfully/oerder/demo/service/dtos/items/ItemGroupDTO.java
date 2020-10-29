@@ -3,7 +3,7 @@ package com.switchfully.oerder.demo.service.dtos.items;
 import java.time.LocalDate;
 
 public class ItemGroupDTO {
-    private String orderGroupId;
+    private String orderId;
     private String itemGroupId;
     private String itemId;
     private int amount;
@@ -22,12 +22,12 @@ public class ItemGroupDTO {
         return itemGroupId;
     }
 
-    public String getOrderGroupId() {
-        return orderGroupId;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setOrderGroupId(String orderGroupId) {
-        this.orderGroupId = orderGroupId;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public void setItemGroupId(String itemGroupId) {

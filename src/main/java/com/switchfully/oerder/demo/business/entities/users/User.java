@@ -55,7 +55,7 @@ public class User implements Entity {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getId() {
+    public String getItemId() {
         return id;
     }
 

@@ -27,7 +27,7 @@ public class CustomerMapper {
 
     public CustomerDTO toDTO(Customer customer){
         CustomerDTO result = new CustomerDTO();
-        result.setId(customer.getId());
+        result.setId(customer.getItemId());
         result.setFirstName(customer.getFirstName());
         result.setLastName(customer.getLastName());
         result.setEmailAddress(customer.getEmailAddress());
@@ -41,7 +41,7 @@ public class CustomerMapper {
 
     public CustomerDTO toRestrictedDTO(Customer customer){
         CustomerDTO result = new CustomerDTO();
-        result.setId(customer.getId());
+        result.setId(customer.getItemId());
         result.setFirstName(customer.getFirstName());
         result.setLastName(customer.getLastName());
         result.setEmailAddress(customer.getEmailAddress());

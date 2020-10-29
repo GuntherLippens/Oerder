@@ -3,9 +3,11 @@ package com.switchfully.oerder.demo.service.services;
 
 import com.switchfully.oerder.demo.business.entities.items.Item;
 import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
+import com.switchfully.oerder.demo.business.entities.items.Order;
 import com.switchfully.oerder.demo.business.repositories.ItemGroupRepository;
 import com.switchfully.oerder.demo.business.repositories.ItemRepository;
-import com.switchfully.oerder.demo.exceptions.ItemGroupNotFoundException;
+import com.switchfully.oerder.demo.business.repositories.OrderRepository;
+import com.switchfully.oerder.demo.exceptions.items.ItemGroupNotFoundException;
 
 import com.switchfully.oerder.demo.service.dtos.items.ItemGroupDTO;
 import com.switchfully.oerder.demo.service.mappers.ItemGroupMapper;
@@ -22,15 +24,18 @@ public class ItemGroupService {
     private final ItemGroupRepository itemGroupRepository;
     private final ItemRepository itemRepository;
     private final ItemGroupMapper itemGroupMapper;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public ItemGroupService(
             ItemGroupRepository itemGroupRepository,
             ItemRepository itemRepository,
-            ItemGroupMapper itemGroupMapper) {
+            ItemGroupMapper itemGroupMapper,
+            OrderRepository orderRepository) {
         this.itemGroupRepository = itemGroupRepository;
         this.itemRepository = itemRepository;
         this.itemGroupMapper = itemGroupMapper;
+        this.orderRepository = orderRepository;
     }
 
     public List<ItemGroupDTO> getAllItemGroupDTOs() {
@@ -46,6 +51,9 @@ public class ItemGroupService {
 
     public ItemGroupDTO registerItemGroup(ItemGroupDTO itemGroupDTO) {
         ItemGroup itemGroup = itemGroupRepository.save(itemGroupMapper.createItemGroup(itemGroupDTO,calculateShippingDate(itemGroupDTO)));
+        itemGroup.setOrderPrice(itemRepository.getItem(itemGroupDTO.getItemId()).getPrice());
+        Order currentOrder = orderRepository.getOrder(itemGroupDTO.getOrderId());
+        currentOrder.addItemGroup(itemGroup);
         return itemGroupMapper.detailDTO(itemGroup);
     }
 

@@ -1,4 +1,4 @@
-package com.switchfully.oerder.demo.exceptions;
+package com.switchfully.oerder.demo.exceptions.items;
 
 public class ItemGroupNotFoundException extends RuntimeException{
     String message;

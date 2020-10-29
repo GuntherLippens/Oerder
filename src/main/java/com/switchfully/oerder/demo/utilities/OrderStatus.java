@@ -1,4 +1,4 @@
-package com.switchfully.oerder.demo.business.entities.items;
+package com.switchfully.oerder.demo.utilities;
 
 public enum OrderStatus {
     CREATED, ORDERED, SHIPPED, RETURNED,CANCELLED;
