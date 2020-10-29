@@ -5,15 +5,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class Order {
-    private String id;
+    private String orderId;
     private List<ItemGroup> itemGroups;
     private String customerId;
     private double totalPrice;
+    private boolean orderIsPlaced;
 
     public Order(String customerId) {
         this.customerId = customerId;
         this.itemGroups = new ArrayList<>();
-        this.id = UUID.randomUUID().toString();
+        this.orderId = UUID.randomUUID().toString();
+        this.orderIsPlaced = false;
     }
 
     public void addItemGroup(ItemGroup itemGroup) {
@@ -21,8 +23,8 @@ public class Order {
         totalPrice += itemGroup.getOrderPrice() * itemGroup.getAmount();
     }
 
-    public String getId() {
-        return id;
+    public String getOrderId() {
+        return orderId;
     }
 
     public List<ItemGroup> getItemGroups() {
@@ -47,5 +49,17 @@ public class Order {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public boolean isOrderIsPlaced() {
+        return orderIsPlaced;
+    }
+
+    public void setOrderIsPlaced(boolean orderIsPlaced) {
+        this.orderIsPlaced = orderIsPlaced;
     }
 }

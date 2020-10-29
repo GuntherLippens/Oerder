@@ -1,28 +1,47 @@
 package com.switchfully.oerder.demo.business.entities.items;
 
-import com.switchfully.oerder.demo.business.repositories.ItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class ItemGroup {
-    private String id;
+    private String orderGroupId;
+    private String itemGroupId;
+    private String itemId;
     private int amount;
     private double orderPrice;
     private LocalDate shippingDate;
 
-    public ItemGroup(String id, int amount, double orderPrice, LocalDate shippingDate) {
-        this.id = id;
+    public ItemGroup(String orderGroupId, String itemId, int amount, double orderPrice, LocalDate shippingDate) {
+        this.orderGroupId = orderGroupId;
+        this.itemId = itemId;
         this.amount = amount;
         this.orderPrice = orderPrice;
+        this.shippingDate = shippingDate;
+        this.itemGroupId = UUID.randomUUID().toString();
     }
 
-    public String getId() {
-        return id;
+    public String getOrderGroupId() {
+        return orderGroupId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setOrderGroupId(String orderGroupId) {
+        this.orderGroupId = orderGroupId;
+    }
+
+    public String getItemGroupId() {
+        return itemGroupId;
+    }
+
+    public void setItemGroupId(String itemGroupId) {
+        this.itemGroupId = itemGroupId;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public int getAmount() {

@@ -1,7 +1,6 @@
 package com.switchfully.oerder.demo.business.repositories;
 
 
-import com.switchfully.oerder.demo.business.entities.items.Item;
 import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
 import com.switchfully.oerder.demo.exceptions.ItemGroupAlreadyExistsException;
 import com.switchfully.oerder.demo.exceptions.ItemGroupNotFoundException;
@@ -28,17 +27,17 @@ public class ItemGroupRepository {
         if (itemGroups.containsValue(itemGroup))
             throw new ItemGroupAlreadyExistsException(
                     "ItemGroup with id"
-                            + itemGroup.getId()
+                            + itemGroup.getItemGroupId()
                             + " already exists.");
-        itemGroups.put(itemGroup.getId(), itemGroup);
+        itemGroups.put(itemGroup.getItemGroupId(), itemGroup);
 
         return itemGroup;
     }
 
-    public ItemGroup getItemGroup(String id) {
-        ItemGroup item = itemGroups.get(id);
+    public ItemGroup getItemGroup(String itemGroupId) {
+        ItemGroup item = itemGroups.get(itemGroupId);
         if (Objects.isNull(item)) {
-            throw new ItemGroupNotFoundException("There is no itemGroup available with the id " + id);
+            throw new ItemGroupNotFoundException("There is no itemGroup available with the id " + itemGroupId);
         }
         return item;
     }
@@ -48,12 +47,14 @@ public class ItemGroupRepository {
     }
 
     public void addFirstItemGroup() {
-        ItemGroup item = new ItemGroup(
+        ItemGroup itemGroup = new ItemGroup(
+                 "007default-item-group-id-points-to-nowhere-be-careful!",
                  itemRepository.getFirstDefaultItem().getId(),
                 10,
                 6.66,
                  LocalDate.now().plusYears(1000));
-        itemGroups.put(item.getId(), item);
+
+        itemGroups.put(itemGroup.getItemGroupId(), itemGroup);
     }
 
     public List<ItemGroup> getItemGroups() {

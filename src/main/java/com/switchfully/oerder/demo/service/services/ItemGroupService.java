@@ -59,12 +59,12 @@ public class ItemGroupService {
     }
 
     private LocalDate calculateShippingDate(ItemGroupDTO itemGroupDTO){
-        LocalDate shippingDate = LocalDate.now();
+        LocalDate shippingDate;
         int amountOrdered = itemGroupDTO.getAmount();
-        String itemGroupId = itemGroupDTO.getId();
+        String itemGroupId = itemGroupDTO.getItemId();
         Item item = itemRepository.getItem(itemGroupId);
         int amountLeft = item.getAmount();
-        if (amountLeft - amountOrdered> 0){
+        if (amountLeft - amountOrdered > 0){
             shippingDate = LocalDate.now().plusDays(1);
         } else {
             shippingDate = LocalDate.now().plusDays(7);
