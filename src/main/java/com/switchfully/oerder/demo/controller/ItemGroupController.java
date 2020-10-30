@@ -22,21 +22,17 @@ public class ItemGroupController {
 
     @GetMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemGroupDTO> getAllItemGroups() {
+    public List<ItemGroupDTO> getAllItemGroupsCurrentlyInYourShoppingCart_AsACustomer() {
         return itemGroupService.getAllItemGroupDTOs();
     }
+
+
 
     @PostMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemGroupDTO save(@RequestBody ItemGroupDTO itemGroupDTO) {
+    public ItemGroupDTO addANewItemGroupToYourShoppingCart_AsACustomer_WillBeAddedToItemGroupListInOrder(@RequestBody ItemGroupDTO itemGroupDTO) {
         return itemGroupService.registerItemGroup(itemGroupDTO);
     }
 
-    @PutMapping(path = "/customer/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public ItemGroupDTO update(@PathVariable String id, @RequestBody ItemGroupDTO itemGroupDTO) {
-        return itemGroupService.updateItemGroup(id, itemGroupDTO);
-    }
 }

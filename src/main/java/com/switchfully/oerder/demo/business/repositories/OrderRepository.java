@@ -19,11 +19,9 @@ public class OrderRepository {
     }
 
     public Order save(Order order) {
-        if (orders.containsValue(order))
-            throw new OrderAlreadyExistsException(
-                    "Order with id"
-                            + order.getOrderId()
-                            + " already exists.");
+        if (orders.containsValue(order)) {
+            throw new OrderAlreadyExistsException(order.getOrderId());
+        }
         orders.put(order.getOrderId(), order);
 
         return order;
@@ -32,7 +30,7 @@ public class OrderRepository {
     public Order getOrder(String orderId) {
         Order item = orders.get(orderId);
         if (Objects.isNull(item)) {
-            throw new OrderNotFoundException("There is no order available with the id " + orderId);
+            throw new OrderNotFoundException(orderId);
         }
         return item;
     }
@@ -40,8 +38,6 @@ public class OrderRepository {
     public Map<String, Order> getOrderMap() {
         return orders;
     }
-
-
 
     public List<Order> getOrders() {
         return new ArrayList<>(orders.values());

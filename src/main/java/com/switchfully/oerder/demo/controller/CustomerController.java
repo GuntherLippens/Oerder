@@ -22,20 +22,20 @@ public class CustomerController {
 
     @GetMapping(path = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerDTO> getAllCustomers() {
+    public List<CustomerDTO> getAllCustomersAsAnAdmin() {
         return customerService.getAllCustomers();
     }
 
     @GetMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDTO getCustomerBasedOnId(@PathVariable String id) {
+    public CustomerDTO getCustomerBasedOnIdAsAnAdmin(@PathVariable String id) {
         return customerService.getCustomer(id);
     }
 
     @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDTO save(@RequestBody CustomerDTO customerDTO) {
+    public CustomerDTO registerYourselfAsANewCustomer(@RequestBody CustomerDTO customerDTO) {
         return customerService.save(customerDTO);
     }
 }

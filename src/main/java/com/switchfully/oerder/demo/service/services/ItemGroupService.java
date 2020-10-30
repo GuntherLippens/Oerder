@@ -1,13 +1,11 @@
 package com.switchfully.oerder.demo.service.services;
 
-
 import com.switchfully.oerder.demo.business.entities.items.Item;
 import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
 import com.switchfully.oerder.demo.business.entities.items.Order;
 import com.switchfully.oerder.demo.business.repositories.ItemGroupRepository;
 import com.switchfully.oerder.demo.business.repositories.ItemRepository;
 import com.switchfully.oerder.demo.business.repositories.OrderRepository;
-import com.switchfully.oerder.demo.exceptions.items.ItemGroupNotFoundException;
 
 import com.switchfully.oerder.demo.service.dtos.items.ItemGroupDTO;
 import com.switchfully.oerder.demo.service.mappers.ItemGroupMapper;
@@ -44,25 +42,12 @@ public class ItemGroupService {
                 .collect(Collectors.toList());
     }
 
-    public ItemGroupDTO getItemGroupDetailsById(String id) {
-        return itemGroupMapper.detailDTO(itemGroupRepository.getItemGroup(id));
-
-    }
 
     public ItemGroupDTO registerItemGroup(ItemGroupDTO itemGroupDTO) {
         ItemGroup itemGroup = itemGroupRepository.save(itemGroupMapper.createItemGroup(itemGroupDTO,calculateShippingDate(itemGroupDTO)));
         itemGroup.setOrderPrice(itemRepository.getItem(itemGroupDTO.getItemId()).getPrice());
         Order currentOrder = orderRepository.getOrder(itemGroupDTO.getOrderId());
         currentOrder.addItemGroup(itemGroup);
-        return itemGroupMapper.detailDTO(itemGroup);
-    }
-
-    public ItemGroupDTO updateItemGroup(String id, ItemGroupDTO itemGroupDTO) {
-        if (!itemGroupRepository.getItemGroupMap().containsKey(id)) throw new ItemGroupNotFoundException("ItemGroup with Isbn " + id );
-        ItemGroup itemGroup = itemGroupRepository.getItemGroup(id);
-        itemGroup.setAmount(itemGroupDTO.getAmount());
-        itemGroup.setOrderPrice(itemGroupDTO.getOrderPrice());
-        itemGroup.setShippingDate(calculateShippingDate(itemGroupDTO));
         return itemGroupMapper.detailDTO(itemGroup);
     }
 

@@ -21,21 +21,21 @@ public class ItemController {
 
     @GetMapping(path = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDTO> getAllItems() {
+    public List<ItemDTO> getAllItems_AsAnAdmin() {
         return itemService.getAllItemDTOs();
     }
 
     @PostMapping(path = "/admin", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDTO save(@RequestBody ItemDTO itemDTO) {
+    public ItemDTO addANewItem_AsAnAdmin(@RequestBody ItemDTO itemDTO) {
         return itemService.registerItem(itemDTO);
     }
 
     @PutMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDTO update(@PathVariable String id, @RequestBody ItemDTO itemDTO) {
+    public ItemDTO updateAnExitingItem_AsAnAdmin(@PathVariable String id, @RequestBody ItemDTO itemDTO) {
         return itemService.updateItem(id, itemDTO);
     }
 }

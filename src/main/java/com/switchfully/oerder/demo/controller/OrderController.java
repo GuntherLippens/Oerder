@@ -20,27 +20,27 @@ public class OrderController {
 
     @GetMapping(path = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDTO> adminViewsAllOrders() {
+    public List<OrderDTO> viewAllOrders_AsAnAdmin() {
         return orderService.getAllOrderDTOs();
     }
 
     @GetMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDTO> customerViewsAllHisOrders(@PathVariable String customerId) {
+    public List<OrderDTO> viewsAllYourOrders_AsACustomer(@PathVariable String customerId) {
         return orderService.getAllMyOrderDTOs(customerId);
     }
 
     @PostMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO createNewEmptyOrderWithStatusCreated(@RequestBody OrderDTO orderDTO) {
+    public OrderDTO createNewOrderWithEmptyItemGroupList_AndWithStatusCreated_AsACustomer(@RequestBody OrderDTO orderDTO) {
         return orderService.registerOrder(orderDTO);
     }
 
     @PutMapping(path = "/customer/place-order/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO updateOrderStatusFromCreatedToOrdered(@PathVariable String id) {
+    public OrderDTO updateOrderStatus_FromCreatedToOrdered(@PathVariable String id) {
         return orderService.placeOrder(id);
     }
 }

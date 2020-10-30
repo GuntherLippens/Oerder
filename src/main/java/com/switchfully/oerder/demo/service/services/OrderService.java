@@ -1,6 +1,9 @@
 package com.switchfully.oerder.demo.service.services;
 
+import com.switchfully.oerder.demo.business.entities.items.Item;
+import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
 import com.switchfully.oerder.demo.business.entities.items.Order;
+import com.switchfully.oerder.demo.business.repositories.ItemRepository;
 import com.switchfully.oerder.demo.utilities.OrderStatus;
 import com.switchfully.oerder.demo.business.repositories.OrderRepository;
 import com.switchfully.oerder.demo.exceptions.items.OrderNotFoundException;
@@ -16,24 +19,29 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
+    private final ItemRepository  itemRepository;
+    private final OrderMapper     orderMapper;
 
     @Autowired
     public OrderService(
-            OrderRepository orderRepository,
-            OrderMapper orderMapper) {
+                    OrderRepository orderRepository,
+                    ItemRepository  itemRepository,
+                    OrderMapper     orderMapper) {
         this.orderRepository = orderRepository;
-        this.orderMapper = orderMapper;
+        this.itemRepository  = itemRepository;
+        this.orderMapper     = orderMapper;
     }
 
     public List<OrderDTO> getAllOrderDTOs() {
-        return orderRepository.getOrders().stream()
-                .map(orderMapper::detailDTO)
-                .collect(Collectors.toList());
+        return orderRepository.getOrders()
+                              .stream()
+                              .map(orderMapper::detailDTO)
+                              .collect(Collectors.toList());
     }
 
     public List<OrderDTO> getAllMyOrderDTOs(String customerId) {
-        return orderRepository.getOrders().stream()
+        return orderRepository.getOrders()
+                .stream()
                 .map(orderMapper::detailDTO)
                 .filter(order -> order.getCustomerId().equals(customerId))
                 .collect(Collectors.toList());
@@ -52,8 +60,21 @@ public class OrderService {
     public OrderDTO placeOrder(String id) {
         if (!orderRepository.getOrderMap().containsKey(id)) throw new OrderNotFoundException("Order with Isbn " + id );
         Order order = orderRepository.getOrder(id);
+        updateStocksDueToOrdering(order);
         order.setOrderStatus(OrderStatus.ORDERED);
         return orderMapper.detailDTO(order);
+    }
+
+    private void updateStocksDueToOrdering (Order order) {
+        order.getItemGroups()
+             .forEach(itemGroup -> {
+                    int orderedAmount = itemGroup.getAmount();
+                    Item item = itemRepository.getItem(itemGroup.getItemId());
+                    int amountInStock = item.getAmount();
+                    int newStockAfterOrderPlacement = amountInStock - orderedAmount;
+                    item.setAmount(newStockAfterOrderPlacement);
+        });
+
     }
 
 
