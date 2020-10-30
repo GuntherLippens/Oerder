@@ -2,6 +2,7 @@ package com.switchfully.oerder.demo.service.mappers;
 
 import com.switchfully.oerder.demo.business.entities.items.Item;
 import com.switchfully.oerder.demo.service.dtos.items.ItemDTO;
+import com.switchfully.oerder.demo.service.dtos.items.ItemStockStatusDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,5 +24,17 @@ public class ItemMapper {
         result.setAmount(item.getAmount());
         return result;
     }
+
+    public ItemStockStatusDTO stockStatusDTO(Item item){
+        ItemStockStatusDTO result = new ItemStockStatusDTO();
+        result.setItemId(item.getItemId());
+        result.setName(item.getName());
+        result.setDescription(item.getDecription());
+        result.setPrice(item.getAmount());
+        result.setStockStatus(ItemStockStatusDTO.calculateStockStatus(item.getAmount()));
+        return result;
+    }
+
+
     
 }

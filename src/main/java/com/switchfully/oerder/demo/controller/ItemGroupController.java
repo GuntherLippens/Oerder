@@ -26,12 +26,10 @@ public class ItemGroupController {
         return itemGroupService.getAllItemGroupDTOs();
     }
 
-
-
     @PostMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemGroupDTO addANewItemGroupToYourShoppingCart_AsACustomer_WillBeAddedToItemGroupListInOrder(@RequestBody ItemGroupDTO itemGroupDTO) {
+    public ItemGroupDTO addANewItemGroupToYourShoppingCart_AsACustomer_WillBeAddedToItemGroupListInRelatedOrder(@RequestBody ItemGroupDTO itemGroupDTO) {
         return itemGroupService.registerItemGroup(itemGroupDTO);
     }
 

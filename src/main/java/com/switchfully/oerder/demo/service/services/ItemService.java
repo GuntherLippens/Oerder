@@ -5,10 +5,12 @@ import com.switchfully.oerder.demo.business.entities.items.Order;
 import com.switchfully.oerder.demo.business.repositories.ItemRepository;
 import com.switchfully.oerder.demo.exceptions.items.ItemNotFoundException;
 import com.switchfully.oerder.demo.service.dtos.items.ItemDTO;
+import com.switchfully.oerder.demo.service.dtos.items.ItemStockStatusDTO;
 import com.switchfully.oerder.demo.service.mappers.ItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,16 @@ public class ItemService {
         return itemRepository.getItems().stream()
                 .map(item -> itemMapper.detailDTO(item))
                 .collect(Collectors.toList());
+    }
+
+    public List<ItemStockStatusDTO> getAllItemStockStatusDTOs() {
+        List<ItemStockStatusDTO> itemStockStatusDTOList=  itemRepository
+                .getItems()
+                .stream()
+                .map(item -> itemMapper.stockStatusDTO((item)))
+                .collect(Collectors.toList());
+        Collections.sort(itemStockStatusDTOList);
+        return itemStockStatusDTOList;
     }
 
     public ItemDTO getItemDetailsById(String id) {
