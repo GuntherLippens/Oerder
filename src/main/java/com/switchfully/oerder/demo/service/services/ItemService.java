@@ -1,6 +1,7 @@
 package com.switchfully.oerder.demo.service.services;
 
 import com.switchfully.oerder.demo.business.entities.items.Item;
+import com.switchfully.oerder.demo.business.entities.items.Order;
 import com.switchfully.oerder.demo.business.repositories.ItemRepository;
 import com.switchfully.oerder.demo.exceptions.items.ItemNotFoundException;
 import com.switchfully.oerder.demo.service.dtos.items.ItemDTO;
@@ -23,15 +24,11 @@ public class ItemService {
         this.itemMapper = itemMapper;
     }
 
-
-
     public List<ItemDTO> getAllItemDTOs() {
         return itemRepository.getItems().stream()
                 .map(item -> itemMapper.detailDTO(item))
                 .collect(Collectors.toList());
     }
-
-
 
     public ItemDTO getItemDetailsById(String id) {
         return itemMapper.detailDTO(itemRepository.getItem(id));
@@ -53,5 +50,7 @@ public class ItemService {
         item.setPrice(itemDTO.getPrice());
         return itemMapper.detailDTO(item);
     }
+
+
 
 }

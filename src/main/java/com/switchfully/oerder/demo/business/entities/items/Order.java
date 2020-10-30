@@ -21,6 +21,15 @@ public class Order {
         this.orderStatus = OrderStatus.CREATED;
     }
 
+    public Order(Order order) {
+        this.customerId = order.getCustomerId();
+        this.itemGroups = order.getItemGroups();
+        this.orderId    = order.getOrderId();
+        this.orderStatus= order.getOrderStatus();
+        this.totalPrice = order.getTotalPrice();
+        this.orderId = UUID.randomUUID().toString();
+    }
+
     public void addItemGroup(ItemGroup itemGroup) {
         itemGroups.add(itemGroup);
         totalPrice += itemGroup.getOrderPrice() * itemGroup.getAmount();

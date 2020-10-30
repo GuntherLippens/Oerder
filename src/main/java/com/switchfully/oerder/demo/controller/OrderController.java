@@ -1,6 +1,7 @@
 package com.switchfully.oerder.demo.controller;
 
 import com.switchfully.oerder.demo.service.dtos.items.OrderDTO;
+import com.switchfully.oerder.demo.service.dtos.items.OrderOverviewDTO;
 import com.switchfully.oerder.demo.service.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class OrderController {
 
     @GetMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDTO> viewsAllYourOrders_AsACustomer(@PathVariable String customerId) {
-        return orderService.getAllMyOrderDTOs(customerId);
+    public OrderOverviewDTO viewsAllYourOrders_AsACustomer(@PathVariable String customerId) {
+        return orderService.makeAnOrderSummaryForACustomer(customerId);
     }
 
     @PostMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE,
@@ -37,10 +38,18 @@ public class OrderController {
         return orderService.registerOrder(orderDTO);
     }
 
-    @PutMapping(path = "/customer/place-order/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(path = "/customer/place-order/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO updateOrderStatus_FromCreatedToOrdered(@PathVariable String id) {
-        return orderService.placeOrder(id);
+    public OrderDTO updateOrderStatus_FromCreatedToOrdered(@PathVariable String orderId) {
+        return orderService.placeOrder(orderId);
     }
+
+    @PostMapping(path = "/customer/re-order/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderDTO reorderAnOldAlreadyRegisteredOrderAgain_AsACustomer(@PathVariable String orderId) {
+        return orderService.reorderOldOrder(orderId);
+    }
+
 }

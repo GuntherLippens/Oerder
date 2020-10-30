@@ -4,6 +4,7 @@ import com.switchfully.oerder.demo.business.entities.items.Item;
 import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
 import com.switchfully.oerder.demo.business.entities.items.Order;
 import com.switchfully.oerder.demo.business.repositories.ItemRepository;
+import com.switchfully.oerder.demo.service.dtos.items.OrderOverviewDTO;
 import com.switchfully.oerder.demo.utilities.OrderStatus;
 import com.switchfully.oerder.demo.business.repositories.OrderRepository;
 import com.switchfully.oerder.demo.exceptions.items.OrderNotFoundException;
@@ -65,6 +66,14 @@ public class OrderService {
         return orderMapper.detailDTO(order);
     }
 
+    public OrderDTO reorderOldOrder(String oldOrderId) {
+        Order clonedOrder = cloneOrderWhichHasAdaptedPricesForItemGroups(oldOrderId);
+        orderRepository.save(clonedOrder);
+        updateStocksDueToOrdering(clonedOrder);
+        clonedOrder.setOrderStatus(OrderStatus.ORDERED);
+        return orderMapper.detailDTO(clonedOrder);
+    }
+
     private void updateStocksDueToOrdering (Order order) {
         order.getItemGroups()
              .forEach(itemGroup -> {
@@ -75,6 +84,18 @@ public class OrderService {
                     item.setAmount(newStockAfterOrderPlacement);
         });
 
+    }
+
+    public OrderOverviewDTO makeAnOrderSummaryForACustomer(String customerId){
+        return new OrderOverviewDTO(getAllMyOrderDTOs(customerId));
+    }
+
+    public Order cloneOrderWhichHasAdaptedPricesForItemGroups(String orderId){
+        Order oldOrder = orderRepository.getOrderMap().get(orderId);
+        Order newOrder = new Order(oldOrder);
+        newOrder.getItemGroups()
+                .forEach(itemGroup -> itemGroup.setOrderPrice(itemRepository.getItem(itemGroup.getItemId()).getPrice()));
+        return newOrder;
     }
 
 
