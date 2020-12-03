@@ -1,48 +1,66 @@
 package com.switchfully.oerder.demo.business.entities.items;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.UUID;
 
+@Entity
+@Table(name="item_group")
 public class ItemGroup {
-    private String orderId;
-    private String itemGroupId;
-    private String itemId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int itemGroupId;
+    @OneToOne
+    @JoinColumn(name="order_id")
+    private Order order;
+
+    @OneToOne
+    @JoinColumn(name="item_id")
+    private Item item;
+
+    @Column(name="amount")
     private int amount;
+
+    @Column(name="order_price")
     private double orderPrice;
+
+    @Column(name="shipping_date")
     private LocalDate shippingDate;
 
-    public ItemGroup(String orderId, String itemId, int amount, double orderPrice, LocalDate shippingDate) {
-        this.orderId = orderId;
-        this.itemId = itemId;
+
+    public ItemGroup(Order order, Item item, int amount, double orderPrice, LocalDate shippingDate) {
+        this.order = order;
+        this.item = item;
         this.amount = amount;
         this.orderPrice = orderPrice;
         this.shippingDate = shippingDate;
-        this.itemGroupId = UUID.randomUUID().toString();
     }
 
-    public String getOrderId() {
-        return orderId;
+    public ItemGroup() {
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public String getItemGroupId() {
+    public void setOrderId(Order orderId) {
+        this.order = orderId;
+    }
+
+    public int getItemGroupId() {
         return itemGroupId;
     }
 
-    public void setItemGroupId(String itemGroupId) {
+    public void setItemGroupId(int itemGroupId) {
         this.itemGroupId = itemGroupId;
     }
 
-    public String getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public int getAmount() {
@@ -74,7 +92,7 @@ public class ItemGroup {
         if (this == o) return true;
         if (!(o instanceof ItemGroup)) return false;
         ItemGroup itemGroup = (ItemGroup) o;
-        return getItemGroupId().equals(itemGroup.getItemGroupId());
+        return getItemGroupId() == (itemGroup.getItemGroupId());
     }
 
     @Override

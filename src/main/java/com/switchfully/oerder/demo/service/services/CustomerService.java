@@ -1,7 +1,8 @@
 package com.switchfully.oerder.demo.service.services;
 
 import com.switchfully.oerder.demo.business.entities.users.Customer;
-import com.switchfully.oerder.demo.business.repositories.CustomerRepository;
+import com.switchfully.oerder.demo.business.repositories.CustomerCrudRepository;
+import com.switchfully.oerder.demo.exceptions.customers.CustomerNotFoundException;
 import com.switchfully.oerder.demo.service.dtos.users.CustomerDTO;
 import com.switchfully.oerder.demo.service.mappers.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
-    private final CustomerRepository customerRepository;
+    private final CustomerCrudRepository customerRepository;
     private final CustomerMapper customerMapper;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public CustomerService(CustomerCrudRepository customerRepository, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
     }
@@ -28,13 +29,17 @@ public class CustomerService {
     }
 
     public List<CustomerDTO> getAllCustomers() {
-        return customerRepository.getCustomers().stream()
+
+        return ((List<Customer>) customerRepository.findAll()).stream()
                 .map(customerMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public CustomerDTO getCustomer(String id) {
-        return customerMapper.toDTO(customerRepository.getCustomerById(id));
+    public CustomerDTO getCustomer(int id) {
+        if (customerRepository.findById(id).isEmpty()) {
+            throw new CustomerNotFoundException("No customer exists with id = "  + id);
+        }
+        return customerMapper.toDTO(customerRepository.findById(id).get());
 
     }
 }

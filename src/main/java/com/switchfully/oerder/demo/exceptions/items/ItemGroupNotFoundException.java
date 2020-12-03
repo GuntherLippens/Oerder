@@ -9,6 +9,6 @@ public class ItemGroupNotFoundException extends RuntimeException{
 
     @Override
     public String getMessage() {
-        return "ItemGroup with id " + message + " was not found in the Oerder shop";
+        return  message ;
     }
 }

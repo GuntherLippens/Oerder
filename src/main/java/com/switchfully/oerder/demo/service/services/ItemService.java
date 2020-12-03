@@ -1,8 +1,7 @@
 package com.switchfully.oerder.demo.service.services;
 
 import com.switchfully.oerder.demo.business.entities.items.Item;
-import com.switchfully.oerder.demo.business.entities.items.Order;
-import com.switchfully.oerder.demo.business.repositories.ItemRepository;
+import com.switchfully.oerder.demo.business.repositories.ItemCrudRepository;
 import com.switchfully.oerder.demo.exceptions.items.ItemNotFoundException;
 import com.switchfully.oerder.demo.service.dtos.items.ItemDTO;
 import com.switchfully.oerder.demo.service.dtos.items.ItemStockStatusDTO;
@@ -17,33 +16,36 @@ import java.util.stream.Collectors;
 @Service
 public class ItemService {
 
-    private final ItemRepository itemRepository;
+    private final ItemCrudRepository itemRepository;
     private final ItemMapper itemMapper;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper) {
+    public ItemService(ItemCrudRepository itemRepository, ItemMapper itemMapper) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
     }
 
     public List<ItemDTO> getAllItemDTOs() {
-        return itemRepository.getItems().stream()
-                .map(item -> itemMapper.detailDTO(item))
+        return ((List<Item>)itemRepository.findAll()).stream()
+                .map(itemMapper::detailDTO)
                 .collect(Collectors.toList());
     }
 
     public List<ItemStockStatusDTO> getAllItemStockStatusDTOs() {
-        List<ItemStockStatusDTO> itemStockStatusDTOList=  itemRepository
-                .getItems()
+        List<ItemStockStatusDTO> itemStockStatusDTOList=
+                ((List<Item>) itemRepository.findAll())
                 .stream()
-                .map(item -> itemMapper.stockStatusDTO((item)))
+                .map(itemMapper::stockStatusDTO)
                 .collect(Collectors.toList());
         Collections.sort(itemStockStatusDTOList);
         return itemStockStatusDTOList;
     }
 
-    public ItemDTO getItemDetailsById(String id) {
-        return itemMapper.detailDTO(itemRepository.getItem(id));
+    public ItemDTO getItemDetailsById(int id) {
+        if (itemRepository.findById(id).isEmpty()) {
+            throw new ItemNotFoundException("No item found with id = " + id);
+        }
+        return itemMapper.detailDTO(itemRepository.findById(id).get());
 
     }
 
@@ -52,14 +54,16 @@ public class ItemService {
         return itemMapper.detailDTO(item);
     }
 
-    public ItemDTO updateItem(String id, ItemDTO itemDTO) {
-        if (!itemRepository.getItemMap().containsKey(id)) throw new ItemNotFoundException("Item with Isbn " + id );
-
-        Item item = itemRepository.getItem(id);
+    public ItemDTO updateItem(int id, ItemDTO itemDTO) {
+        if (itemRepository.findById(id).isEmpty()) {
+            throw new ItemNotFoundException("No item found with id = " + id);
+        }
+        Item item = itemRepository.findById(id).get();
         item.setName(itemDTO.getName());
-        item.setDecription(itemDTO.getDescription());
+        item.setDescription(itemDTO.getDescription());
         item.setAmount(itemDTO.getAmount());
         item.setPrice(itemDTO.getPrice());
+        itemRepository.save(item);
         return itemMapper.detailDTO(item);
     }
 

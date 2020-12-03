@@ -1,5 +1,6 @@
 package com.switchfully.oerder.demo.controller;
 
+import com.switchfully.oerder.demo.business.entities.items.Order;
 import com.switchfully.oerder.demo.service.dtos.items.OrderDTO;
 import com.switchfully.oerder.demo.service.dtos.items.OrderOverviewDTO;
 import com.switchfully.oerder.demo.service.services.OrderService;
@@ -27,7 +28,7 @@ public class OrderController {
 
     @GetMapping(path = "/customer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public OrderOverviewDTO viewsAllYourOrders_AsACustomer(@PathVariable String customerId) {
+    public OrderOverviewDTO viewsAllYourOrders_AsACustomer(@PathVariable int customerId) {
         return orderService.makeAnOrderSummaryForACustomer(customerId);
     }
 
@@ -41,14 +42,14 @@ public class OrderController {
     @PutMapping(path = "/customer/place-order/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO updateOrderStatus_FromCreatedToOrdered(@PathVariable String orderId) {
+    public OrderDTO updateOrderStatus_FromCreatedToOrdered(@PathVariable Order orderId) {
         return orderService.placeOrder(orderId);
     }
 
     @PostMapping(path = "/customer/re-order/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO reorderAnOldAlreadyRegisteredOrderAgain_AsACustomer(@PathVariable String orderId) {
+    public OrderDTO reorderAnOldAlreadyRegisteredOrderAgain_AsACustomer(@PathVariable int orderId) {
         return orderService.reorderOldOrder(orderId);
     }
 

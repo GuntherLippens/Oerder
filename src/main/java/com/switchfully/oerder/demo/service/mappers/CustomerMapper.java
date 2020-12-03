@@ -2,7 +2,7 @@ package com.switchfully.oerder.demo.service.mappers;
 
 import com.switchfully.oerder.demo.business.entities.users.Customer;
 import com.switchfully.oerder.demo.service.dtos.users.CustomerDTO;
-import com.switchfully.oerder.demo.utilities.Address;
+import com.switchfully.oerder.demo.business.entities.users.Address;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,7 +27,7 @@ public class CustomerMapper {
 
     public CustomerDTO toDTO(Customer customer){
         CustomerDTO result = new CustomerDTO();
-        result.setId(customer.getItemId());
+        result.setCustomerId(customer.getCustomerId());
         result.setFirstName(customer.getFirstName());
         result.setLastName(customer.getLastName());
         result.setEmailAddress(customer.getEmailAddress());
@@ -41,7 +41,7 @@ public class CustomerMapper {
 
     public CustomerDTO toRestrictedDTO(Customer customer){
         CustomerDTO result = new CustomerDTO();
-        result.setId(customer.getItemId());
+        result.setCustomerId(customer.getCustomerId());
         result.setFirstName(customer.getFirstName());
         result.setLastName(customer.getLastName());
         result.setEmailAddress(customer.getEmailAddress());

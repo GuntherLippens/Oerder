@@ -11,7 +11,7 @@ import java.util.*;
 @Repository
 public class OrderRepository {
 
-    private final Map<String, Order> orders;
+    private final Map<Integer, Order> orders;
 
     @Autowired
     public OrderRepository() {
@@ -20,22 +20,22 @@ public class OrderRepository {
 
     public Order save(Order order) {
         if (orders.containsValue(order)) {
-            throw new OrderAlreadyExistsException(order.getOrderId());
+            throw new OrderAlreadyExistsException("Order : " + order.getOrderId());
         }
         orders.put(order.getOrderId(), order);
 
         return order;
     }
 
-    public Order getOrder(String orderId) {
+    public Order getOrder(Order orderId) {
         Order item = orders.get(orderId);
         if (Objects.isNull(item)) {
-            throw new OrderNotFoundException(orderId);
+            throw new OrderNotFoundException("Order : " + orderId);
         }
         return item;
     }
 
-    public Map<String, Order> getOrderMap() {
+    public Map<Integer, Order> getOrderMap() {
         return orders;
     }
 

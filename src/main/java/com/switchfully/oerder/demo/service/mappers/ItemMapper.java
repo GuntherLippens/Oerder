@@ -17,9 +17,8 @@ public class ItemMapper {
 
     public ItemDTO detailDTO(Item item) {
         ItemDTO result = new ItemDTO();
-        result.setItemId(item.getItemId());
         result.setName(item.getName());
-        result.setDescription(item.getDecription());
+        result.setDescription(item.getDescription());
         result.setPrice(item.getAmount());
         result.setAmount(item.getAmount());
         return result;
@@ -29,7 +28,7 @@ public class ItemMapper {
         ItemStockStatusDTO result = new ItemStockStatusDTO();
         result.setItemId(item.getItemId());
         result.setName(item.getName());
-        result.setDescription(item.getDecription());
+        result.setDescription(item.getDescription());
         result.setPrice(item.getAmount());
         result.setStockStatus(ItemStockStatusDTO.calculateStockStatus(item.getAmount()));
         return result;

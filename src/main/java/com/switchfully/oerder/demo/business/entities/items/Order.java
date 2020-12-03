@@ -1,33 +1,51 @@
 package com.switchfully.oerder.demo.business.entities.items;
 
+import com.switchfully.oerder.demo.business.entities.users.Customer;
 import com.switchfully.oerder.demo.utilities.OrderStatus;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
+@Entity
+@Table(name="order_table")
 public class Order {
-    private String orderId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="order_id")
+    private int orderId;
+
+    @OneToMany
+    @JoinColumn(name="order_id")
     private List<ItemGroup> itemGroups;
-    private String customerId;
+
+    @OneToOne
+    @JoinColumn(name="customer_id")
+    private Customer customer;
+
+    @Column(name="total_price")
     private double totalPrice;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name="order_status")
     private OrderStatus orderStatus;
 
-    public Order(String customerId) {
-        this.customerId = customerId;
+    public Order(Customer customer) {
+        this.customer = customer;
         this.itemGroups = new ArrayList<>();
-        this.orderId = UUID.randomUUID().toString();
         this.orderStatus = OrderStatus.CREATED;
     }
 
     public Order(Order order) {
-        this.customerId = order.getCustomerId();
+        this.customer = order.getCustomer();
         this.itemGroups = order.getItemGroups();
         this.orderId    = order.getOrderId();
         this.orderStatus= order.getOrderStatus();
         this.totalPrice = order.getTotalPrice();
-        this.orderId = UUID.randomUUID().toString();
+    }
+
+    public Order() {
     }
 
     public void addItemGroup(ItemGroup itemGroup) {
@@ -35,7 +53,7 @@ public class Order {
         totalPrice += itemGroup.getOrderPrice() * itemGroup.getAmount();
     }
 
-    public String getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
@@ -47,12 +65,12 @@ public class Order {
         this.itemGroups = itemGroups;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public double getTotalPrice() {
@@ -63,7 +81,7 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
@@ -80,7 +98,7 @@ public class Order {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return getOrderId().equals(order.getOrderId());
+        return getOrderId() == (order.getOrderId());
     }
 
     @Override

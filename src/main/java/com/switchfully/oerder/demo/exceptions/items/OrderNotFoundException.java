@@ -9,6 +9,6 @@ public class OrderNotFoundException extends RuntimeException{
 
     @Override
     public String getMessage() {
-        return "Order with id " + message + " was not found in the Oerder shop";
+        return  message ;
     }
 }

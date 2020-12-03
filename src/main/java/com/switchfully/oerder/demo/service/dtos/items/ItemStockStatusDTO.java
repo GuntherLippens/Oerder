@@ -7,7 +7,7 @@ public class ItemStockStatusDTO implements Comparable{
     private String description;
     private double price;
     private StockStatus stockStatus;
-    private String itemId;
+    private int itemId;
 
     public String getName() {
         return name;
@@ -41,11 +41,11 @@ public class ItemStockStatusDTO implements Comparable{
         this.stockStatus = stockStatus;
     }
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 

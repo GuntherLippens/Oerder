@@ -9,6 +9,6 @@ public class ItemNotFoundException extends RuntimeException{
 
     @Override
     public String getMessage() {
-        return "Item with id " + message + " was not found in the Oerder shop";
+        return  message ;
     }
 }

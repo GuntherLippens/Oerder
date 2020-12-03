@@ -36,7 +36,7 @@ public class ItemController {
     @PutMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDTO updateAnExitingItem_AsAnAdmin(@PathVariable String id, @RequestBody ItemDTO itemDTO) {
+    public ItemDTO updateAnExitingItem_AsAnAdmin(@PathVariable int id, @RequestBody ItemDTO itemDTO) {
         return itemService.updateItem(id, itemDTO);
     }
 

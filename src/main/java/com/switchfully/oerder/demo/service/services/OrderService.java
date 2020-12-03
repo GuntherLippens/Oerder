@@ -1,9 +1,9 @@
 package com.switchfully.oerder.demo.service.services;
 
 import com.switchfully.oerder.demo.business.entities.items.Item;
-import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
 import com.switchfully.oerder.demo.business.entities.items.Order;
-import com.switchfully.oerder.demo.business.repositories.ItemRepository;
+import com.switchfully.oerder.demo.business.repositories.ItemCrudRepository;
+import com.switchfully.oerder.demo.business.repositories.OrderCrudRepository;
 import com.switchfully.oerder.demo.service.dtos.items.OrderOverviewDTO;
 import com.switchfully.oerder.demo.utilities.OrderStatus;
 import com.switchfully.oerder.demo.business.repositories.OrderRepository;
@@ -15,18 +15,19 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
-    private final OrderRepository orderRepository;
-    private final ItemRepository  itemRepository;
+    private final OrderCrudRepository orderRepository;
+    private final ItemCrudRepository itemRepository;
     private final OrderMapper     orderMapper;
 
     @Autowired
     public OrderService(
-                    OrderRepository orderRepository,
-                    ItemRepository  itemRepository,
+                    OrderCrudRepository orderRepository,
+                    ItemCrudRepository  itemRepository,
                     OrderMapper     orderMapper) {
         this.orderRepository = orderRepository;
         this.itemRepository  = itemRepository;
@@ -34,22 +35,22 @@ public class OrderService {
     }
 
     public List<OrderDTO> getAllOrderDTOs() {
-        return orderRepository.getOrders()
+        return ((List<Order>)orderRepository.findAll())
                               .stream()
                               .map(orderMapper::detailDTO)
                               .collect(Collectors.toList());
     }
 
-    public List<OrderDTO> getAllMyOrderDTOs(String customerId) {
-        return orderRepository.getOrders()
+    public List<OrderDTO> getAllMyOrderDTOs(int customerId) {
+        return ((List<Order>)orderRepository.findAll())
                 .stream()
                 .map(orderMapper::detailDTO)
-                .filter(order -> order.getCustomerId().equals(customerId))
+                .filter(orderDTO -> orderDTO.getCustomerId() == customerId)
                 .collect(Collectors.toList());
     }
 
-    public OrderDTO getOrderDetailsById(String id) {
-        return orderMapper.detailDTO(orderRepository.getOrder(id));
+    public OrderDTO getOrderDetailsById(Order order) {
+        return orderMapper.detailDTO(orderRepository.findById(order.getOrderId()).get());
 
     }
 
@@ -58,15 +59,13 @@ public class OrderService {
         return orderMapper.detailDTO(order);
     }
 
-    public OrderDTO placeOrder(String id) {
-        if (!orderRepository.getOrderMap().containsKey(id)) throw new OrderNotFoundException("Order with Isbn " + id );
-        Order order = orderRepository.getOrder(id);
+    public OrderDTO placeOrder(Order order) {
         updateStocksDueToOrdering(order);
         order.setOrderStatus(OrderStatus.ORDERED);
         return orderMapper.detailDTO(order);
     }
 
-    public OrderDTO reorderOldOrder(String oldOrderId) {
+    public OrderDTO reorderOldOrder(int oldOrderId) {
         Order clonedOrder = cloneOrderWhichHasAdaptedPricesForItemGroups(oldOrderId);
         orderRepository.save(clonedOrder);
         updateStocksDueToOrdering(clonedOrder);
@@ -78,23 +77,28 @@ public class OrderService {
         order.getItemGroups()
              .forEach(itemGroup -> {
                     int orderedAmount = itemGroup.getAmount();
-                    Item item = itemRepository.getItem(itemGroup.getItemId());
-                    int amountInStock = item.getAmount();
+                    Optional<Item> item = itemRepository.findById(itemGroup.getItem().getItemId());
+                    int amountInStock = item.get().getAmount();
                     int newStockAfterOrderPlacement = amountInStock - orderedAmount;
-                    item.setAmount(newStockAfterOrderPlacement);
+                    item.get().setAmount(newStockAfterOrderPlacement);
         });
 
     }
 
-    public OrderOverviewDTO makeAnOrderSummaryForACustomer(String customerId){
+    public OrderOverviewDTO makeAnOrderSummaryForACustomer(int customerId){
         return new OrderOverviewDTO(getAllMyOrderDTOs(customerId));
     }
 
-    public Order cloneOrderWhichHasAdaptedPricesForItemGroups(String orderId){
-        Order oldOrder = orderRepository.getOrderMap().get(orderId);
+    public Order cloneOrderWhichHasAdaptedPricesForItemGroups(int orderId){
+        Order oldOrder = orderRepository.findById(orderId).get();
         Order newOrder = new Order(oldOrder);
         newOrder.getItemGroups()
-                .forEach(itemGroup -> itemGroup.setOrderPrice(itemRepository.getItem(itemGroup.getItemId()).getPrice()));
+                .forEach(itemGroup -> itemGroup.setOrderPrice(
+                        itemRepository.findById(itemGroup
+                                .getItem()
+                                .getItemId())
+                                .get()
+                                .getPrice()));
         return newOrder;
     }
 

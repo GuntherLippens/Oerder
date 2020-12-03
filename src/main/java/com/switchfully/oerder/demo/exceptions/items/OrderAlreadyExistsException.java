@@ -9,6 +9,6 @@ public class OrderAlreadyExistsException extends RuntimeException{
 
     @Override
     public String getMessage() {
-        return message + " already exists";
+        return message;
     }
 }

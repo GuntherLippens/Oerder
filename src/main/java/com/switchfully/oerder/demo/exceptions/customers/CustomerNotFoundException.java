@@ -9,6 +9,6 @@ public class CustomerNotFoundException extends RuntimeException{
 
     @Override
     public String getMessage() {
-        return "A customer with id " + message + " is not registered in the Oerder shop";
+        return  message ;
     }
 }

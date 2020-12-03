@@ -1,23 +1,38 @@
 package com.switchfully.oerder.demo.business.entities.items;
 
-import com.switchfully.oerder.demo.business.entities.Entity;
+import com.switchfully.oerder.demo.business.entities.Itemlike;
 
+import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
 
-public class Item implements Entity {
+@Entity
+public class Item implements Itemlike {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="item_id")
+    private int itemId;
+
+    @Column(name="name")
     private String name;
-    private String decription;
-    private double price;
-    private int amount;
-    private String itemId;
 
-    public Item(String name, String decription, double price, int amount) {
+    @Column(name="description")
+    private String description;
+
+    @Column(name="price")
+    private double price;
+
+    @Column(name="amount")
+    private int amount;
+
+
+    public Item(String name, String description, double price, int amount) {
         this.name = name;
-        this.decription = decription;
+        this.description = description;
         this.price = price;
         this.amount = amount;
-        this.itemId = UUID.randomUUID().toString();
+    }
+
+    public Item() {
     }
 
     public String getName() {
@@ -28,12 +43,12 @@ public class Item implements Entity {
         this.name = name;
     }
 
-    public String getDecription() {
-        return decription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDecription(String decription) {
-        this.decription = decription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getPrice() {
@@ -52,11 +67,11 @@ public class Item implements Entity {
         this.amount = amount;
     }
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 
@@ -65,7 +80,7 @@ public class Item implements Entity {
         if (this == o) return true;
         if (!(o instanceof Item)) return false;
         Item item = (Item) o;
-        return getItemId().equals(item.getItemId());
+        return getItemId() == (item.getItemId());
     }
 
     @Override

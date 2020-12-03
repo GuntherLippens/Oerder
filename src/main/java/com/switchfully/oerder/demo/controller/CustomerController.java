@@ -28,7 +28,7 @@ public class CustomerController {
 
     @GetMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDTO getCustomerBasedOnIdAsAnAdmin(@PathVariable String id) {
+    public CustomerDTO getCustomerBasedOnIdAsAnAdmin(@PathVariable int id) {
         return customerService.getCustomer(id);
     }
 

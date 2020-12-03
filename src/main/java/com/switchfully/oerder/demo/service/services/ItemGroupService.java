@@ -3,9 +3,7 @@ package com.switchfully.oerder.demo.service.services;
 import com.switchfully.oerder.demo.business.entities.items.Item;
 import com.switchfully.oerder.demo.business.entities.items.ItemGroup;
 import com.switchfully.oerder.demo.business.entities.items.Order;
-import com.switchfully.oerder.demo.business.repositories.ItemGroupRepository;
-import com.switchfully.oerder.demo.business.repositories.ItemRepository;
-import com.switchfully.oerder.demo.business.repositories.OrderRepository;
+import com.switchfully.oerder.demo.business.repositories.*;
 
 import com.switchfully.oerder.demo.service.dtos.items.ItemGroupDTO;
 import com.switchfully.oerder.demo.service.mappers.ItemGroupMapper;
@@ -19,17 +17,17 @@ import java.util.stream.Collectors;
 @Service
 public class ItemGroupService {
 
-    private final ItemGroupRepository itemGroupRepository;
-    private final ItemRepository itemRepository;
+    private final ItemGroupCrudRepository itemGroupRepository;
+    private final ItemCrudRepository itemRepository;
     private final ItemGroupMapper itemGroupMapper;
-    private final OrderRepository orderRepository;
+    private final OrderCrudRepository orderRepository;
 
     @Autowired
     public ItemGroupService(
-            ItemGroupRepository itemGroupRepository,
-            ItemRepository itemRepository,
+            ItemGroupCrudRepository itemGroupRepository,
+            ItemCrudRepository itemRepository,
             ItemGroupMapper itemGroupMapper,
-            OrderRepository orderRepository) {
+            OrderCrudRepository orderRepository) {
         this.itemGroupRepository = itemGroupRepository;
         this.itemRepository = itemRepository;
         this.itemGroupMapper = itemGroupMapper;
@@ -37,7 +35,7 @@ public class ItemGroupService {
     }
 
     public List<ItemGroupDTO> getAllItemGroupDTOs() {
-        return itemGroupRepository.getItemGroups().stream()
+        return ((List<ItemGroup>)itemGroupRepository.findAll()).stream()
                 .map(itemGroupMapper::detailDTO)
                 .collect(Collectors.toList());
     }
@@ -45,17 +43,14 @@ public class ItemGroupService {
 
     public ItemGroupDTO registerItemGroup(ItemGroupDTO itemGroupDTO) {
         ItemGroup itemGroup = itemGroupRepository.save(itemGroupMapper.createItemGroup(itemGroupDTO,calculateShippingDate(itemGroupDTO)));
-        itemGroup.setOrderPrice(itemRepository.getItem(itemGroupDTO.getItemId()).getPrice());
-        Order currentOrder = orderRepository.getOrder(itemGroupDTO.getOrderId());
-        currentOrder.addItemGroup(itemGroup);
         return itemGroupMapper.detailDTO(itemGroup);
     }
 
     private LocalDate calculateShippingDate(ItemGroupDTO itemGroupDTO){
         LocalDate shippingDate;
         int amountOrdered = itemGroupDTO.getAmount();
-        String itemGroupId = itemGroupDTO.getItemId();
-        Item item = itemRepository.getItem(itemGroupId);
+        int itemGroupId = itemGroupDTO.getItemId();
+        Item item = itemRepository.findById(itemGroupId).get();
         int amountLeft = item.getAmount();
         if (amountLeft - amountOrdered > 0){
             shippingDate = LocalDate.now().plusDays(1);
